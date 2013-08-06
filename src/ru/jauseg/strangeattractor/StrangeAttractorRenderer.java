@@ -71,6 +71,16 @@ public class StrangeAttractorRenderer implements GLWallpaperService.Renderer, Fl
 		return (float) ((float) (SystemClock.elapsedRealtime() & 0xfffffff) / 20000.0f);
 	}
 
+	private float time2()
+	{
+		return (float) ((float) ((SystemClock.elapsedRealtime() + 100500) & 0xfffffff) / 20000.0f);
+	}
+
+	private float time3()
+	{
+		return (float) ((float) ((SystemClock.elapsedRealtime() + 500100) & 0xfffffff) / 20000.0f);
+	}
+
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height)
 	{
@@ -103,20 +113,37 @@ public class StrangeAttractorRenderer implements GLWallpaperService.Renderer, Fl
 		gl.glDrawArrays(GL10.GL_TRIANGLE_FAN, 0, 4);
 
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-		gl.glColor4f(
-				(float) (1.0f + 0.5f * Math.sin(time() * 5.0f)),
-				(float) (1.0f + 0.5f * Math.sin(time() * 7.0f)),
-				(float) (1.0f + 0.5f * Math.sin(time() * 11.0f)), 0.2f);
-
 		gl.glPointSize(1.0f);
-
 		gl.glVertexPointer(2, GL10.GL_FLOAT, 0, vertex);
+		
+		gl.glColor4f(
+				(float) (0.5f + 0.5f * Math.sin(time() * 5.0f)), 
+				(float) (0.5f + 0.5f * Math.sin(time() * 7.0f)),
+				(float) (0.5f + 0.5f * Math.sin(time() * 11.0f)), 0.2f);
 
 		NativeCalls.calculate(vertex, VERTEX_NUMBER, time());
 		gl.glDrawArrays(GL10.GL_POINTS, 0, VERTEX_NUMBER >> 1);
 
+//		gl.glColor4f(
+//				(float) (0.5f + 0.5f * Math.sin(time2() * 5.0f)),
+//				(float) (0.5f + 0.5f * Math.sin(time2() * 7.0f)),
+//				(float) (0.5f + 0.5f * Math.sin(time2() * 11.0f)),
+//				0.2f);
+//
+//		NativeCalls.calculate(vertex, VERTEX_NUMBER, time2());
+//		gl.glDrawArrays(GL10.GL_POINTS, 0, VERTEX_NUMBER >> 1);
+//
+//		gl.glColor4f(
+//				(float) (0.5f + 0.5f * Math.sin(time3() * 5.0f)),
+//				(float) (0.5f + 0.5f * Math.sin(time3() * 7.0f)),
+//				(float) (0.5f + 0.5f * Math.sin(time3() * 11.0f)),
+//				0.2f);
+//
+//		NativeCalls.calculate(vertex, VERTEX_NUMBER, time3());
+//		gl.glDrawArrays(GL10.GL_POINTS, 0, VERTEX_NUMBER >> 1);
+
 		fps.frameDone();
-		// SystemClock.sleep(10);
+		//SystemClock.sleep(50);
 
 	}
 
