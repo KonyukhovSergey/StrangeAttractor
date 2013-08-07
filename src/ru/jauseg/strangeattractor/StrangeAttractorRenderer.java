@@ -68,17 +68,7 @@ public class StrangeAttractorRenderer implements GLWallpaperService.Renderer, Fl
 
 	private float time()
 	{
-		return (float) ((float) (SystemClock.elapsedRealtime() & 0xfffffff) / 20000.0f);
-	}
-
-	private float time2()
-	{
-		return (float) ((float) ((SystemClock.elapsedRealtime() + 100500) & 0xfffffff) / 20000.0f);
-	}
-
-	private float time3()
-	{
-		return (float) ((float) ((SystemClock.elapsedRealtime() + 500100) & 0xfffffff) / 20000.0f);
+		return (float) ((float) (SystemClock.elapsedRealtime() & 0xfffffff) / 4000.0f);
 	}
 
 	@Override
@@ -92,13 +82,15 @@ public class StrangeAttractorRenderer implements GLWallpaperService.Renderer, Fl
 
 		gl.glViewport(0, 0, width, height);
 		// GLU.gluOrtho2D(gl, -1.75f, 1.75f, 2, -2);
-		GLU.gluOrtho2D(gl, -1.5f, 1.5f, 1.5f, -1.5f);
+		GLU.gluOrtho2D(gl, -1.2f, 1.2f, 1.5f, -1.5f);
 
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		// gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
 		quadBuffer = new QuadBuffer(-2.1f, -2.1f, 2.1f, 2.1f);
 	}
+
+	private float pi = 4 * (float) (Math.atan(1));
 
 	@Override
 	public void onDrawFrame(GL10 gl)
@@ -113,34 +105,17 @@ public class StrangeAttractorRenderer implements GLWallpaperService.Renderer, Fl
 		gl.glDrawArrays(GL10.GL_TRIANGLE_FAN, 0, 4);
 
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+		//gl.glDisable(gl.GL_BLEND);
 		gl.glPointSize(1.0f);
 		gl.glVertexPointer(2, GL10.GL_FLOAT, 0, vertex);
 		
 		gl.glColor4f(
-				(float) (0.5f + 0.5f * Math.sin(time() * 5.0f)), 
-				(float) (0.5f + 0.5f * Math.sin(time() * 7.0f)),
-				(float) (0.5f + 0.5f * Math.sin(time() * 11.0f)), 0.2f);
+				(float) (0.5f + 0.5f * Math.sin(time())), 
+				(float) (0.5f + 0.5f * Math.sin(time() + 0.667f * pi)),
+				(float) (0.5f + 0.5f * Math.sin(time() + 0.667f * 2.0f * pi)), 0.2f);
 
 		NativeCalls.calculate(vertex, VERTEX_NUMBER, time());
 		gl.glDrawArrays(GL10.GL_POINTS, 0, VERTEX_NUMBER >> 1);
-
-//		gl.glColor4f(
-//				(float) (0.5f + 0.5f * Math.sin(time2() * 5.0f)),
-//				(float) (0.5f + 0.5f * Math.sin(time2() * 7.0f)),
-//				(float) (0.5f + 0.5f * Math.sin(time2() * 11.0f)),
-//				0.2f);
-//
-//		NativeCalls.calculate(vertex, VERTEX_NUMBER, time2());
-//		gl.glDrawArrays(GL10.GL_POINTS, 0, VERTEX_NUMBER >> 1);
-//
-//		gl.glColor4f(
-//				(float) (0.5f + 0.5f * Math.sin(time3() * 5.0f)),
-//				(float) (0.5f + 0.5f * Math.sin(time3() * 7.0f)),
-//				(float) (0.5f + 0.5f * Math.sin(time3() * 11.0f)),
-//				0.2f);
-//
-//		NativeCalls.calculate(vertex, VERTEX_NUMBER, time3());
-//		gl.glDrawArrays(GL10.GL_POINTS, 0, VERTEX_NUMBER >> 1);
 
 		fps.frameDone();
 		//SystemClock.sleep(50);
